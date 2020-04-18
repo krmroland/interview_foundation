@@ -18,9 +18,9 @@ class RegistrationController extends Controller
     public function __invoke(Request $request)
     {
         $data = $request->validate([
-            "name" => "required",
-            "email" => "required|unique:users",
-            "password" => "required|min:6",
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6',
         ]);
 
         $user = User::create($data);
@@ -28,7 +28,7 @@ class RegistrationController extends Controller
         event(new Registered($user));
 
         return response()->json(
-            ["message" => "User was created successfully", "user" => $user],
+            ['message' => 'User was created successfully', 'user' => $user],
             201
         );
     }

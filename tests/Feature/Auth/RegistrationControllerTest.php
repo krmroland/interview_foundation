@@ -16,17 +16,37 @@ class RegistrationControllerTest extends TestCase
     {
         $data = factory(User::class)->raw();
 
-        $this->postJson("api/auth/register", $data)->assertCreated();
+        $this->postJson('api/auth/register', $data)->assertCreated();
 
-        $this->assertEquals(User::limit(1)->value("email"), $data["email"]);
+        $this->assertEquals(User::limit(1)->value('email'), $data['email']);
     }
 
     public function testSuccessFullRegistrationAuthenticatesTheUserAutomatically()
     {
         $data = factory(User::class)->raw();
 
-        $this->postJson("api/auth/register", $data)->assertCreated();
+        $this->postJson('api/auth/register', $data)->assertCreated();
 
-        $this->assertEquals(Auth::user()->email, $data["email"]);
+        $this->assertEquals(Auth::user()->email, $data['email']);
+    }
+
+    public function testRegistrationFailsWithInvalidEmailAddress()
+    {
+        $data = factory(User::class)->raw(['email' => 'wrong-email-address']);
+
+        $this->postJson('api/auth/register', $data)
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['email' => 'The email must be a valid email address.']);
+    }
+
+    public function testRegistrationWithExistingEmailsFailsValidation()
+    {
+        $existingUser = factory(User::Class)->create();
+
+        $data = factory(User::class)->raw(['email' => $existingUser->email]);
+
+        $this->postJson('api/auth/register', $data)
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['email' => 'The email has already been taken.']);
     }
 }
