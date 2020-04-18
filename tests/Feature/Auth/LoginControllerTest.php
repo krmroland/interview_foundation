@@ -11,7 +11,7 @@ class LoginControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testLoginWithValiAuthenticatesUser()
+    public function testLoginWithValidCredentialsAuthenticatesUser()
     {
         $user = factory(User::class)->create(['password' => 'password']);
 
@@ -21,5 +21,29 @@ class LoginControllerTest extends TestCase
         ])->assertOk();
 
         $this->assertAuthenticatedAs($user);
+    }
+
+    public function testLoginWithInValidCredentialsFails()
+    {
+        $user = factory(User::class)->make(['password' => 'password']);
+
+        $this->postJson('/auth/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ])
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['email' => trans('auth.failed')]);
+
+        $this->assertGuest();
+    }
+
+    public function testLoginRedirectsToHomeIfUserIsAlreadyAuthenticated()
+    {
+        $this->actingAs(factory(User::class)->create());
+
+        $this->postJson('/auth/login', [
+            'email' => 'email@example.com',
+            'password' => 'password',
+        ])->assertRedirect('/');
     }
 }
