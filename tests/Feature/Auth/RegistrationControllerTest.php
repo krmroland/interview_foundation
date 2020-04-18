@@ -17,7 +17,7 @@ class RegistrationControllerTest extends TestCase
     {
         $data = factory(User::class)->raw();
 
-        $this->postJson('api/auth/register', $data)->assertCreated();
+        $this->postJson('/auth/register', $data)->assertCreated();
 
         $this->assertEquals(User::value('email'), $data['email']);
     }
@@ -26,7 +26,7 @@ class RegistrationControllerTest extends TestCase
     {
         $data = factory(User::class)->raw();
 
-        $this->postJson('api/auth/register', $data)->assertCreated();
+        $this->postJson('/auth/register', $data)->assertCreated();
 
         $this->assertEquals(Auth::user()->email, $data['email']);
     }
@@ -35,7 +35,7 @@ class RegistrationControllerTest extends TestCase
     {
         $data = factory(User::class)->raw(['email' => 'wrong-email-address']);
 
-        $this->postJson('api/auth/register', $data)
+        $this->postJson('/auth/register', $data)
             ->assertStatus(422)
             ->assertJsonValidationErrors(['email' => 'The email must be a valid email address.']);
     }
@@ -46,7 +46,7 @@ class RegistrationControllerTest extends TestCase
 
         $data = factory(User::class)->raw(['email' => $existingUser->email]);
 
-        $this->postJson('api/auth/register', $data)
+        $this->postJson('/auth/register', $data)
             ->assertStatus(422)
             ->assertJsonValidationErrors(['email' => 'The email has already been taken.']);
     }
@@ -55,7 +55,7 @@ class RegistrationControllerTest extends TestCase
     {
         $data = factory(User::class)->raw(['password' => 'secret']);
 
-        $this->postJson('api/auth/register', $data)->assertCreated();
+        $this->postJson('/auth/register', $data)->assertCreated();
 
         $this->assertTrue(Hash::check('secret', User::value('password')));
     }
