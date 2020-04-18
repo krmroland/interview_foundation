@@ -18,6 +18,9 @@ before_script:
   - php artisan migrate
 
 script:
-  - vendor/bin/phpcs --standard=psr2 app/
-  - vendor/bin/phpunit --coverage-clover clover.xml --stop-on-failure
-  - php ./coverage-checker.php clover.xml 38
+  - composer lint
+  - composer test:coverage
+  - php ./coverage-checker.php build/logs/clover.xml 38
+
+after_success:
+  - travis_retry  vendor/bin/php-coveralls -v
