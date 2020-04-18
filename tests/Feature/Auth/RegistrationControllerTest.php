@@ -5,6 +5,7 @@ namespace Tests\Feature\Auth;
 use App\User;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -18,7 +19,7 @@ class RegistrationControllerTest extends TestCase
 
         $this->postJson('api/auth/register', $data)->assertCreated();
 
-        $this->assertEquals(User::limit(1)->value('email'), $data['email']);
+        $this->assertEquals(User::value('email'), $data['email']);
     }
 
     public function testSuccessFullRegistrationAuthenticatesTheUserAutomatically()
@@ -48,5 +49,14 @@ class RegistrationControllerTest extends TestCase
         $this->postJson('api/auth/register', $data)
             ->assertStatus(422)
             ->assertJsonValidationErrors(['email' => 'The email has already been taken.']);
+    }
+
+    public function testItHashesTheUserPasswordBeforePersistingIt()
+    {
+        $data = factory(User::class)->raw(['password' => 'secret']);
+
+        $this->postJson('api/auth/register', $data)->assertCreated();
+
+        $this->assertTrue(Hash::check('secret', User::value('password')));
     }
 }
