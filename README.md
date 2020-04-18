@@ -1,12 +1,11 @@
 # Interview Foundation Build
 
-
-[![Build Status](https://travis-ci.org/alnutile/interview_foundation.svg?branch=master)](https://travis-ci.org/alnutile/interview_foundation)
+[![Build Status](https://travis-ci.org/krmroland/interview_foundation.svg?branch=master)](https://travis-ci.org/krmroland/interview_foundation)
+[![Coverage Status](https://coveralls.io/repos/github/krmroland/interview_foundation/badge.svg?branch=master)](https://coveralls.io/github/krmroland/interview_foundation?branch=master)
 
 This is a vanilla Laravel 7 install
 
 What I will want is for you to complete the following tasks so I can then review the work.
-
 
 ## The business story to complete
 
@@ -66,24 +65,25 @@ And most importantly PHPUnit test that mock the interactions with the API Classe
 
 I should be able to build this on my machine with
 
-  * composer install
-  * npm install && npm run dev
-
+- composer install
+- npm install && npm run dev
 
 ## Fork the repo
+
 Make sure to fork it this way I can look over later.
 
 ## Keep Controllers small
+
 Use Laravels single action controllers (see docs)
 Make sure controllers are small and business logic is in a sharable class
 
-
 ## Work in small commits
+
 I do not want to see what big code dump I want you to push often using PRs
 As you take small steps and write tests push (more on this in a moment)
 
-
 ## Sign up for TravisCI and setup it up to run per build
+
 With this you have to get your .travis.yml file to run the PHPunit tests etc
 This build is already working in travis so it should be pretty easy and this .travis
 file should get you going
@@ -91,8 +91,8 @@ file should get you going
 Update your readme Travis badge to match your build
 
 ## Tests
+
 This feature will require some testing, those tests should only use the
 Refreshdatabase as needed.
 
 Test should not hit the api use Facade mocking for that
-
