@@ -14,3 +14,4 @@ clover.xml
 build
 .coveralls.yml
 .php_cs.cache
+.prettierrc
