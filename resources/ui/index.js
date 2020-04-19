@@ -1,13 +1,12 @@
 import Vue from 'vue';
+import VueCompositionApi from '@vue/composition-api';
+import http from '@/services/http';
 
-import { BootstrapVue } from 'bootstrap-vue';
+Vue.prototype.$http = http;
 
-Vue.component('auth-component', require('./auth/index').default);
-Vue.component('home-component', require('./home/index').default);
+Vue.use(VueCompositionApi);
 
-Vue.use(BootstrapVue);
-
-import './components/icons';
+import './components/global';
 
 new Vue({
   el: '#app',
