@@ -7,6 +7,8 @@ Vue.component('home-component', require('./home/index').default);
 
 Vue.use(BootstrapVue);
 
+import './components/icons';
+
 new Vue({
   el: '#app',
 });
