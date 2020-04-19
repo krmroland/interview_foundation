@@ -10,7 +10,13 @@
     </b-card-title>
     <b-form @submit.prevent="form.post('auth/register', { onSuccess })">
       <b-form-group label="Name:">
-        <b-form-input required placeholder="Enter name" v-model="form.fields.name"></b-form-input>
+        <b-form-input
+          required
+          placeholder="Enter name"
+          v-model="form.fields.name"
+          :state="form.errorState('name')"
+        ></b-form-input>
+        <b-form-invalid-feedback v-text="form.errors.name"></b-form-invalid-feedback>
       </b-form-group>
 
       <b-form-group label="Email address:">
@@ -19,16 +25,20 @@
           required
           placeholder="Enter email"
           v-model="form.fields.email"
+          :state="form.errorState('email')"
         ></b-form-input>
+        <b-form-invalid-feedback v-text="form.errors.email"></b-form-invalid-feedback>
       </b-form-group>
 
       <b-form-group label="Password:">
         <b-form-input
-          type="password"
           required
+          type="password"
           placeholder="password"
           v-model="form.fields.password"
+          :state="form.errorState('password')"
         ></b-form-input>
+        <b-form-invalid-feedback v-text="form.errors.password"></b-form-invalid-feedback>
       </b-form-group>
 
       <b-form-group class="tw-mt-5 sm:tw-mt-10">
