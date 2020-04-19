@@ -7,6 +7,8 @@
 
 ## Screen-shots
 
+![Screen shot](docs/screenshots/login.png)
+![Screen shot](docs/screenshots/login-error.png)
 ![Screen shot](docs/screenshots/registration.png)
 
 What I will want is for you to complete the following tasks so I can then review the work.
