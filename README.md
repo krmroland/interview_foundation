@@ -1,9 +1,13 @@
 # Interview Foundation Build
 
 [![Build Status](https://travis-ci.org/krmroland/interview_foundation.svg?branch=master)](https://travis-ci.org/krmroland/interview_foundation)
-[![Coverage Status](https://coveralls.io/repos/github/krmroland/interview_foundation/badge.svg?branch=master)](https://coveralls.io/github/krmroland/interview_foundation?branch=master)
+<a href='https://coveralls.io/github/krmroland/interview_foundation?branch=master'><img src='https://coveralls.io/repos/github/krmroland/interview_foundation/badge.svg?branch=master' alt='Coverage Status' /></a>
 
-This is a vanilla Laravel 7 install
+## My favorite Github Repositories
+
+## Screen-shots
+
+![Screen shot](docs/screenshots/registration.png)
 
 What I will want is for you to complete the following tasks so I can then review the work.
 

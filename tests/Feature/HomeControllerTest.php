@@ -16,7 +16,7 @@ class HomeControllerTest extends TestCase
         $this->get('/')->assertRedirect('auth');
     }
 
-    public function testItRendsTheHomePageIfUserIsAuthenticated()
+    public function testItRendersTheHomePageIfUserIsAuthenticated()
     {
         $this->actingAs(factory(User::class)->create())
             ->get('/')
