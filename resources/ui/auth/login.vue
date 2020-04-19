@@ -5,20 +5,10 @@
         <b-icon-shield-lock variant="primary" class="tw-text-6xl"></b-icon-shield-lock>
       </span>
       <span class="tw-mt-2 tw-text-2xl tw-font-bold">
-        Registration
+        Login
       </span>
     </b-card-title>
-    <b-form @submit.prevent="form.post('auth/register', { onSuccess })">
-      <b-form-group label="Name:">
-        <b-form-input
-          required
-          placeholder="Enter name"
-          v-model="form.fields.name"
-          :state="form.errorState('name')"
-        ></b-form-input>
-        <b-form-invalid-feedback v-text="form.errors.name"></b-form-invalid-feedback>
-      </b-form-group>
-
+    <b-form @submit.prevent="form.post('auth/login', { onSuccess })">
       <b-form-group label="Email address:">
         <b-form-input
           type="email"
@@ -43,13 +33,14 @@
 
       <b-form-group class="tw-mt-5 sm:tw-mt-10">
         <b-button block variant="primary" type="submit" :disabled="form.loading.value">
-          Register
+          Login
         </b-button>
       </b-form-group>
     </b-form>
 
     <p class="tw-text-right tw-px-2 tw-mt-5 md:tw-mt-10">
-      Have an account already? Goto <b-button variant="link" @click.prevent="login">Login</b-button>
+      Don't have an account already? Goto
+      <b-button variant="link" @click.prevent="register">Register</b-button>
     </p>
   </b-card>
 </template>
@@ -57,7 +48,7 @@
 import { useForm } from '@/services/forms';
 export default {
   props: {
-    login: Function,
+    register: Function,
   },
   setup() {
     return { form: useForm({}) };

@@ -71,5 +71,9 @@ export default (options = { data: {} }) => {
 
   const getValue = key => get(fields, key);
 
-  return { loading, fields, errors, post, updateValue, getValue };
+  const errorState = field => {
+    return errors[field] ? false : null;
+  };
+
+  return { loading, fields, errors, post, updateValue, getValue, errorState };
 };
