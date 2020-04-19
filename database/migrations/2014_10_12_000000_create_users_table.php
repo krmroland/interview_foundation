@@ -19,6 +19,9 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            // could have used a new migration but I guess it doesn't matter 
+            // since we haven't deployed to production yet
+            $table->string("github_token")->nullable(); 
             $table->rememberToken();
             $table->timestamps();
         });

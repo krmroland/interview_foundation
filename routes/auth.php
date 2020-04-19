@@ -7,3 +7,7 @@ Route::middleware('guest')->group(function () {
     Route::post('register', Auth\RegistrationController::class);
     Route::post('login', Auth\LoginController::class);
 });
+
+Route::middleware('auth')->group(function () {
+    Route::post('updateGithubToken', Auth\UpdateGithubTokenController::class);
+});

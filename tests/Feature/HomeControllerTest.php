@@ -16,6 +16,11 @@ class HomeControllerTest extends TestCase
         $this->get('/')->assertRedirect('auth');
     }
 
+    public function testItReturnsA401ResponseStatusCodeWithNoRedirectForJsonRequests()
+    {
+        $this->getJson('/')->assertStatus(401);
+    }
+
     public function testItRendersTheHomePageIfUserIsAuthenticated()
     {
         $this->actingAs(factory(User::class)->create())
