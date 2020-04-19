@@ -7,7 +7,7 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}" />
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>Github Stared Repos</title>
 
         <!-- Scripts -->
         <script src="{{ mix('ui/js/app.js') }}" defer></script>

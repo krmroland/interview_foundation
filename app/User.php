@@ -2,9 +2,10 @@
 
 namespace App;
 
+use App\Casts\Encrypted;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -15,7 +16,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'password'];
+    protected $fillable = ['name', 'email', 'password', 'github_token'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -31,6 +32,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'github_token' => Encrypted::class,
     ];
     /**
      * Sets the password attribute
