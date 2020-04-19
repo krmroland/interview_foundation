@@ -14,7 +14,7 @@
 
        
                <!-- Styles -->
-        <link href="{{ mix('ui/css/app.css') }}" rel="stylesheet" />
+        <link href="{{ mix('css/app.css') }}" rel="stylesheet" />
 
     </head>
     <body>
