@@ -15,10 +15,14 @@
       </b-button>
     </b-card-title>
 
-    <p v-if="!refreshed && !isFetching" class="text-center tw-py-2 tw-text-2xl">
+    <p v-if="!refreshed && !isFetching" class="text-center tw-py-2 tw-text-xl">
       Click the Refresh button to fetch the starred repositories
     </p>
-
+    <div v-if="error" class="tw-my-2">
+      <b-alert show dismissible variant="danger">
+        {{ error }}
+      </b-alert>
+    </div>
     <b-table
       striped
       hover
