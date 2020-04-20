@@ -100,7 +100,13 @@ export default {
         .then(() => {
           this.isSubmitting = false;
           this.isShowingForm = false;
-          this.notification = { type: 'success', message: 'Token was updated successfully' };
+          const deletedToken = !this.token;
+          this.notification = {
+            type: deletedToken ? 'warning' : 'success',
+            message: deletedToken
+              ? 'Token was removed successfully'
+              : 'Token was updated successfully',
+          };
           this.$emit('update:currentToken', this.token);
         })
         .catch(() => {
