@@ -17,13 +17,19 @@
       </p>
     </div>
 
+    <div class="tw-w-full md:tw-w-2/3 tw-mx-auto" v-if="notification">
+      <b-alert show dismissible :variant="notification.type">
+        {{ notification.message }}
+      </b-alert>
+    </div>
+
     <b-button
-      variant="primary"
+      :variant="currentToken ? 'light' : 'primary'"
       class="tw-uppercase tw-tracking-widest"
       v-if="!isShowingForm"
       @click="isShowingForm = true"
     >
-      Add github token
+      {{ currentToken ? 'Update Token' : 'Add github token' }}
     </b-button>
 
     <b-row class="mt-5" v-else>
@@ -43,7 +49,7 @@
             :loading="true"
             @click="submitToken"
           >
-            {{ isSubmitting ? '.... processing' : 'ADD TOKEN' }}
+            {{ isSubmitting ? '.... processing' : 'SAVE TOKEN' }}
           </b-button>
         </b-form-group>
       </b-col>
@@ -60,6 +66,7 @@ export default {
       isShowingForm: false,
       token: this.currentToken,
       isSubmitting: false,
+      notification: null,
     };
   },
   computed: {
@@ -78,7 +85,20 @@ export default {
       this.token = this.currentToken;
     },
     submitToken() {
+      this.notification = null;
       this.isSubmitting = true;
+      this.$http
+        .post('/auth/updateGithubToken', { github_token: this.token })
+        .then(() => {
+          this.isSubmitting = false;
+          this.isShowingForm = false;
+          this.notification = { type: 'success', message: 'Token was updated successfully' };
+          this.$emit('update:currentToken', this.token);
+        })
+        .catch(() => {
+          this.isSubmitting = false;
+          this.notification = { type: 'danger', message: 'Something went wrong, please try again' };
+        });
     },
   },
 };

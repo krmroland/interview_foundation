@@ -8,6 +8,7 @@ import {
   FormInputPlugin,
   ButtonPlugin,
   InputGroupPlugin,
+  AlertPlugin,
 } from 'bootstrap-vue';
 
 Vue.use(LayoutPlugin);
@@ -17,3 +18,4 @@ Vue.use(FormGroupPlugin);
 Vue.use(FormInputPlugin);
 Vue.use(ButtonPlugin);
 Vue.use(InputGroupPlugin);
+Vue.use(AlertPlugin);
