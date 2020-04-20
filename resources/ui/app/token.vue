@@ -51,7 +51,8 @@
                 :loading="true"
                 @click="submitToken"
               >
-                {{ isSubmitting ? '.... processing' : 'SAVE TOKEN' }}
+                <b-spinner small v-if="isSubmitting"></b-spinner>
+                <span>SAVE TOKEN</span>
               </b-button>
             </template>
           </b-input-group>
