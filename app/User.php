@@ -4,7 +4,9 @@ namespace App;
 
 use App\Casts\Encrypted;
 use Illuminate\Notifications\Notifiable;
+use App\Services\GitHub\Contracts\GithubApi;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Exceptions\MissingGithubTokenException;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -41,5 +43,18 @@ class User extends Authenticatable
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = bcrypt($password);
+    }
+    /**
+     * The users github client
+     * @throws App\Exceptions\MissingGithubTokenException
+     * @return \App\User\UserGithubTokenClient
+     */
+    public function gitHub()
+    {
+        if (blank($this->github_token)) {
+            throw new MissingGithubTokenException($this);
+        }
+
+        return tap(app(GithubApi::class))->authenticateUsingToken($this->github_token);
     }
 }
