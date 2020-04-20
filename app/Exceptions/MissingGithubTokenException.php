@@ -27,6 +27,6 @@ class MissingGithubTokenException extends Exception
      */
     public function render()
     {
-        return response()->json(['message' => 'The provided user is missing a github token']);
+        return response()->json(['error' => 'Missing  git-hub token'], 400);
     }
 }
