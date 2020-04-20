@@ -41,21 +41,20 @@
 
         <div class="tw-mt-3" v-if="currentToken || isShowingForm">
           <h2 class="tw-text-left tw-mb-3 tw-text-2xl tw-tracking-widest">GITHUB TOKEN</h2>
-          <b-form-group class="tw-text-left">
+          <b-input-group>
             <b-form-input placeholder="Paste token here" v-model="token"></b-form-input>
-          </b-form-group>
-
-          <b-form-group class="tw-text-right">
-            <b-button
-              variant="primary"
-              :disabled="!canSubmit"
-              class="tw-mx-1"
-              :loading="true"
-              @click="submitToken"
-            >
-              {{ isSubmitting ? '.... processing' : 'SAVE TOKEN' }}
-            </b-button>
-          </b-form-group>
+            <template v-slot:append>
+              <b-button
+                variant="primary"
+                :disabled="!canSubmit"
+                class="tw-rounded-none"
+                :loading="true"
+                @click="submitToken"
+              >
+                {{ isSubmitting ? '.... processing' : 'SAVE TOKEN' }}
+              </b-button>
+            </template>
+          </b-input-group>
         </div>
       </b-col>
     </b-row>

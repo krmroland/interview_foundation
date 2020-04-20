@@ -11,6 +11,7 @@
       <b-row class="mt-5">
         <b-col md="10" sm="12" class="mx-auto">
           <github-token :current-token="user.github_token" @update:currentToken="updateToken" />
+          <starred-repositories v-if="user.github_token" />
         </b-col>
       </b-row>
     </b-container>
@@ -20,7 +21,7 @@
 export default {
   components: {
     GithubToken: require('./token').default,
-    StarredRepositories: require('./token').default,
+    StarredRepositories: require('./starred-repositories').default,
   },
   data: () => ({
     user: window.App.user,
