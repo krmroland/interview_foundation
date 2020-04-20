@@ -10,6 +10,8 @@
 ![Screen shot](docs/screenshots/login.png)
 ![Screen shot](docs/screenshots/login-error.png)
 ![Screen shot](docs/screenshots/registration.png)
+![Screen shot](docs/screenshots/no-token.png)
+![Screen shot](docs/screenshots/add-token.png)
 
 What I will want is for you to complete the following tasks so I can then review the work.
 
