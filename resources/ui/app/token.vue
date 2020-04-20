@@ -1,63 +1,71 @@
 <template>
-  <div>
-    <div v-if="!currentToken">
-      <p class="tw-text-2xl">
-        You haven't added a github token yet.
-      </p>
-      <p class="tw-text-xl">
-        <span> Click</span>
-        <a
-          href="https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line"
-          class="tw-px-1"
-          target="_blank"
-        >
-          here
-        </a>
-        <span> to learn how to make token</span>
-      </p>
-    </div>
-
-    <div class="tw-w-full md:tw-w-2/3 tw-mx-auto" v-if="notification">
-      <b-alert show dismissible :variant="notification.type">
-        {{ notification.message }}
-      </b-alert>
-    </div>
-
-    <b-button
-      :variant="currentToken ? 'light' : 'primary'"
-      class="tw-uppercase tw-tracking-widest"
-      v-if="!isShowingForm"
-      @click="isShowingForm = true"
-    >
-      {{ currentToken ? 'Update Token' : 'Add github token' }}
-    </b-button>
-
-    <b-row class="mt-5" v-else>
-      <b-col md="6" sm="10" class="mx-auto">
-        <b-form-group label="Github token" class="tw-text-left">
-          <b-form-input placeholder="Paste token here" v-model="token"></b-form-input>
-        </b-form-group>
-        <hr />
-        <b-form-group class="tw-text-right">
-          <b-button variant="light" @click.prevent="cancel" :disabled="isSubmitting">
-            CANCEL
-          </b-button>
+  <b-card class="tw-border-none text-center">
+    <b-row>
+      <b-col md="3">
+        <b-card-title class="text-center tw-my-3 tw-flex tw-flex-col">
+          <span>
+            <github-icon class="tw-text-gray-600" />
+          </span>
+        </b-card-title>
+      </b-col>
+      <b-col md="9" class="mx-auto">
+        <div v-if="notification">
+          <b-alert show dismissible :variant="notification.type">
+            {{ notification.message }}
+          </b-alert>
+        </div>
+        <div v-if="!currentToken" class="tw-mb-2">
+          <p class="tw-text-2xl">
+            You haven't added a github token yet.
+          </p>
+          <p class="tw-text-xl">
+            <span> Click</span>
+            <a
+              href="https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line"
+              class="tw-px-1"
+              target="_blank"
+            >
+              here
+            </a>
+            <span> to learn how to make token</span>
+          </p>
           <b-button
             variant="primary"
-            :disabled="!canSubmit"
-            class="tw-mx-1"
-            :loading="true"
-            @click="submitToken"
+            class="tw-uppercase tw-tracking-widest tw-mt-2"
+            v-if="!isShowingForm"
+            @click="isShowingForm = true"
           >
-            {{ isSubmitting ? '.... processing' : 'SAVE TOKEN' }}
+            Add github token
           </b-button>
-        </b-form-group>
+        </div>
+
+        <div class="tw-mt-3" v-if="currentToken || isShowingForm">
+          <h2 class="tw-text-left tw-mb-3 tw-text-2xl tw-tracking-widest">GITHUB TOKEN</h2>
+          <b-input-group>
+            <b-form-input placeholder="Paste token here" v-model="token"></b-form-input>
+            <template v-slot:append>
+              <b-button
+                variant="primary"
+                :disabled="!canSubmit"
+                class="tw-rounded-none"
+                :loading="true"
+                @click="submitToken"
+              >
+                <b-spinner small v-if="isSubmitting"></b-spinner>
+                <span>SAVE TOKEN</span>
+              </b-button>
+            </template>
+          </b-input-group>
+        </div>
       </b-col>
     </b-row>
-  </div>
+  </b-card>
 </template>
 <script>
 export default {
+  components: {
+    GithubIcon: require('./github.icon').default,
+  },
   props: {
     currentToken: { type: String, required: false },
   },
@@ -92,7 +100,13 @@ export default {
         .then(() => {
           this.isSubmitting = false;
           this.isShowingForm = false;
-          this.notification = { type: 'success', message: 'Token was updated successfully' };
+          const deletedToken = !this.token;
+          this.notification = {
+            type: deletedToken ? 'warning' : 'success',
+            message: deletedToken
+              ? 'Token was removed successfully'
+              : 'Token was updated successfully',
+          };
           this.$emit('update:currentToken', this.token);
         })
         .catch(() => {

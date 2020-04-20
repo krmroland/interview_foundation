@@ -9,6 +9,8 @@ import {
   ButtonPlugin,
   InputGroupPlugin,
   AlertPlugin,
+  TablePlugin,
+  SpinnerPlugin,
 } from 'bootstrap-vue';
 
 Vue.use(LayoutPlugin);
@@ -19,3 +21,5 @@ Vue.use(FormInputPlugin);
 Vue.use(ButtonPlugin);
 Vue.use(InputGroupPlugin);
 Vue.use(AlertPlugin);
+Vue.use(TablePlugin);
+Vue.use(SpinnerPlugin);
