@@ -21,7 +21,6 @@ class UpdateGithubTokenController extends Controller
 
         return response()->json([
             'message' => 'Token was updated successfully',
-            'user' => $auth->user()->fresh(),
         ]);
     }
 }

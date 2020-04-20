@@ -16,7 +16,7 @@
                 <github-icon class="tw-text-gray-600" />
               </span>
             </b-card-title>
-            <github-token :current-token="user.github_token" />
+            <github-token :current-token="user.github_token" @update:currentToken="updateToken" />
           </b-card>
         </b-col>
       </b-row>
@@ -35,6 +35,11 @@ export default {
   computed: {
     shortName() {
       return String(this.user.name).split(' ')[0];
+    },
+  },
+  methods: {
+    updateToken(token) {
+      this.$set(this.user, 'github_token', token);
     },
   },
 };
