@@ -13,6 +13,7 @@
 ![Screen shot](docs/screenshots/dashboard.png)
 ![Screen shot](docs/screenshots/dashboard-new-token.png)
 ![Screen shot](docs/screenshots/dashboard-update-token.png)
+![Screen shot](docs/screenshots/dashboard-fetching.png)
 ![Screen shot](docs/screenshots/dashboard-successful-fetch.png)
 ![Screen shot](docs/screenshots/dashboard-error-fetch.png)
 

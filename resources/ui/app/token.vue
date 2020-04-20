@@ -41,21 +41,39 @@
 
         <div class="tw-mt-3" v-if="currentToken || isShowingForm">
           <h2 class="tw-text-left tw-mb-3 tw-text-2xl tw-tracking-widest">GITHUB TOKEN</h2>
-          <b-input-group>
-            <b-form-input placeholder="Paste token here" v-model="token"></b-form-input>
-            <template v-slot:append>
-              <b-button
-                variant="primary"
-                :disabled="!canSubmit"
+          <b-form-group>
+            <b-input-group>
+              <b-form-input
+                placeholder="Paste token here"
                 class="tw-rounded-none"
-                :loading="true"
-                @click="submitToken"
-              >
-                <b-spinner small v-if="isSubmitting"></b-spinner>
-                <span>SAVE TOKEN</span>
-              </b-button>
-            </template>
-          </b-input-group>
+                v-model="visibleToken"
+                :disabled="!isVisible"
+              ></b-form-input>
+              <template v-slot:append>
+                <b-button
+                  variant="outline-info"
+                  class="tw-rounded-none"
+                  @click="isVisible = !isVisible"
+                >
+                  <b-icon-eye-slash v-if="isVisible" />
+                  <b-icon-eye v-else />
+                </b-button>
+              </template>
+            </b-input-group>
+          </b-form-group>
+
+          <b-form-group v-if="isVisible" class="tw-text-left">
+            <b-button
+              variant="primary"
+              :disabled="!canSubmit"
+              class="tw-rounded-none"
+              :loading="true"
+              @click="submitToken"
+            >
+              <b-spinner small v-if="isSubmitting"></b-spinner>
+              <span>SAVE TOKEN</span>
+            </b-button>
+          </b-form-group>
         </div>
       </b-col>
     </b-row>
@@ -75,6 +93,7 @@ export default {
       token: this.currentToken,
       isSubmitting: false,
       notification: null,
+      isVisible: false,
     };
   },
   computed: {
@@ -86,7 +105,19 @@ export default {
         (!this.token || String(this.token).length > 10)
       );
     },
+    maskedToken() {
+      return String('*').repeat(20);
+    },
+    visibleToken: {
+      get() {
+        return this.isVisible ? this.token : this.maskedToken;
+      },
+      set(value) {
+        this.token = value;
+      },
+    },
   },
+
   methods: {
     cancel() {
       this.isShowingForm = false;
@@ -100,6 +131,7 @@ export default {
         .then(() => {
           this.isSubmitting = false;
           this.isShowingForm = false;
+          this.isVisible = false;
           const deletedToken = !this.token;
           this.notification = {
             type: deletedToken ? 'warning' : 'success',
