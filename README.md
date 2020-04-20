@@ -10,10 +10,16 @@
 ![Screen shot](docs/screenshots/login.png)
 ![Screen shot](docs/screenshots/login-error.png)
 ![Screen shot](docs/screenshots/registration.png)
-![Screen shot](docs/screenshots/no-token.png)
-![Screen shot](docs/screenshots/add-token.png)
+![Screen shot](docs/screenshots/dashboard.png)
+![Screen shot](docs/screenshots/dashboard-new-token.png)
+![Screen shot](docs/screenshots/dashboard-update-token.png)
+![Screen shot](docs/screenshots/dashboard-successful-fetch.png)
+![Screen shot](docs/screenshots/dashboard-error-fetch.png)
 
-What I will want is for you to complete the following tasks so I can then review the work.
+### Todo
+
+- Validate token using github API before persisting
+  What I will want is for you to complete the following tasks so I can then review the work.
 
 ## The business story to complete
 
