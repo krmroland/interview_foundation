@@ -53,6 +53,7 @@
                 <b-button
                   variant="outline-info"
                   class="tw-rounded-none"
+                  v-if="currentToken"
                   @click="isVisible = !isVisible"
                 >
                   <b-icon-eye-slash v-if="isVisible" />
@@ -93,7 +94,7 @@ export default {
       token: this.currentToken,
       isSubmitting: false,
       notification: null,
-      isVisible: false,
+      isVisible: !this.currentToken, // we will hide the token if it is available
     };
   },
   computed: {
