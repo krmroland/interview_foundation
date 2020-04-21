@@ -16,7 +16,7 @@ class GithubServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(GithubApi::class, function ($app) {
+        $this->app->bind(GithubApi::class, function ($app) {
             return new PhpGithubApi($app->make(Client::class));
         });
     }

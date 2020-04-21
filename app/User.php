@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Casts\Encrypted;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
 use App\Services\GitHub\Contracts\GithubApi;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -42,7 +43,7 @@ class User extends Authenticatable
      */
     public function setPasswordAttribute($password)
     {
-        $this->attributes['password'] = bcrypt($password);
+        $this->attributes['password'] = Hash::make($password);
     }
     /**
      * The users github client
