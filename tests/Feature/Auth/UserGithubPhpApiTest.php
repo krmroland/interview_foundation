@@ -33,4 +33,12 @@ class UserGithubTest extends TestCase
 
         $this->assertSame($user->github()->getUserStarredRepositories(), $response);
     }
+
+    public function testUsersShouldNotShareTheSameGithubInstance()
+    {
+        $first = factory(User::class)->create(['github_token' => 'first-user-token']);
+        $second = factory(User::class)->create(['github_token' => 'second-user-token']);
+
+        $this->assertNotSame($first->github(), $second->github());
+    }
 }
