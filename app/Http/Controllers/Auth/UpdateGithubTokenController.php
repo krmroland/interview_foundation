@@ -17,7 +17,7 @@ class UpdateGithubTokenController extends Controller
      */
     public function __invoke(Request $request, AuthManager $auth)
     {
-        $auth->user()->update($request->validate(['github_token' => 'nullable|string']));
+        $auth->user()->update($request->validate(['github_token' => 'string']));
 
         return response()->json([
             'message' => 'Token was updated successfully',

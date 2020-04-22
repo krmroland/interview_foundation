@@ -9,11 +9,6 @@
         </b-card-title>
       </b-col>
       <b-col md="9" class="mx-auto">
-        <div v-if="notification">
-          <b-alert show dismissible :variant="notification.type">
-            {{ notification.message }}
-          </b-alert>
-        </div>
         <div v-if="!currentToken" class="tw-mb-2">
           <p class="tw-text-2xl">
             You haven't added a github token yet.
@@ -31,12 +26,17 @@
           </p>
           <b-button
             variant="primary"
-            class="tw-uppercase tw-tracking-widest tw-mt-2"
+            class="tw-uppercase tw-tracking-widest tw-mt-2 tw-shadow-none"
             v-if="!isShowingForm"
             @click="isShowingForm = true"
           >
             Add github token
           </b-button>
+        </div>
+        <div v-if="notification">
+          <b-alert show dismissible :variant="notification.type">
+            {{ notification.message }}
+          </b-alert>
         </div>
 
         <div class="tw-mt-3" v-if="currentToken || isShowingForm">
@@ -45,14 +45,14 @@
             <b-input-group>
               <b-form-input
                 placeholder="Paste token here"
-                class="tw-rounded-none"
+                class="tw-rounded-none tw-shadow-none"
                 v-model="visibleToken"
                 :disabled="!isVisible"
               ></b-form-input>
               <template v-slot:append>
                 <b-button
-                  variant="outline-info"
-                  class="tw-rounded-none"
+                  variant="secondary"
+                  class="tw-rounded-none tw-shadow-none"
                   v-if="currentToken"
                   @click="isVisible = !isVisible"
                 >
@@ -61,19 +61,27 @@
                 </b-button>
               </template>
             </b-input-group>
-          </b-form-group>
-
-          <b-form-group v-if="isVisible" class="tw-text-left">
-            <b-button
-              variant="primary"
-              :disabled="!canSubmit"
-              class="tw-rounded-none"
-              :loading="true"
-              @click="submitToken"
-            >
-              <b-spinner small v-if="isSubmitting"></b-spinner>
-              <span>SAVE TOKEN</span>
-            </b-button>
+            <div v-if="isVisible" class="tw-text-left">
+              <b-button
+                variant="link"
+                v-if="currentToken"
+                class="tw-rounded-none"
+                @click="deleteToken"
+                :disabled="isBusy"
+              >
+                <b-spinner small v-if="isDeleting"></b-spinner>
+                <span>delete</span>
+              </b-button>
+              <b-button
+                variant="link"
+                :disabled="!canSubmit || isBusy"
+                class="tw-rounded-none"
+                @click="submitToken"
+              >
+                <b-spinner small v-if="isSaving"></b-spinner>
+                <span>save</span>
+              </b-button>
+            </div>
           </b-form-group>
         </div>
       </b-col>
@@ -92,19 +100,16 @@ export default {
     return {
       isShowingForm: false,
       token: this.currentToken,
-      isSubmitting: false,
+      isSaving: false,
       notification: null,
+      isDeleting: false,
       isVisible: !this.currentToken, // we will hide the token if it is available
     };
   },
   computed: {
     canSubmit() {
       // could have used the exact length 40 but I am not sure if the length can vary
-      return (
-        !this.isSubmitting &&
-        this.currentToken !== this.token &&
-        (!this.token || String(this.token).length > 10)
-      );
+      return !this.isSaving && this.currentToken !== this.token && String(this.token).length > 10;
     },
     maskedToken() {
       return String('*').repeat(20);
@@ -117,6 +122,9 @@ export default {
         this.token = value;
       },
     },
+    isBusy() {
+      return this.isSaving || this.isDeleting;
+    },
   },
 
   methods: {
@@ -125,27 +133,50 @@ export default {
       this.token = this.currentToken;
     },
     submitToken() {
-      this.notification = null;
-      this.isSubmitting = true;
+      this.isSaving = true;
       this.$http
-        .post('/auth/updateGithubToken', { github_token: this.token })
+        .put('/auth/githubToken', { github_token: this.token })
         .then(() => {
-          this.isSubmitting = false;
+          this.isSaving = false;
           this.isShowingForm = false;
           this.isVisible = false;
           const deletedToken = !this.token;
           this.notification = {
-            type: deletedToken ? 'warning' : 'success',
-            message: deletedToken
-              ? 'Token was removed successfully'
-              : 'Token was updated successfully',
+            type: 'success',
+            message: 'Token was updated successfully',
           };
+
           this.$emit('update:currentToken', this.token);
         })
         .catch(() => {
-          this.isSubmitting = false;
-          this.notification = { type: 'danger', message: 'Something went wrong, please try again' };
+          this.errorNotification();
+        })
+        .finally(() => {
+          this.isSaving = false;
         });
+    },
+    deleteToken() {
+      if (!window.confirm('Delete token?')) {
+        return;
+      }
+      this.isDeleting = true;
+
+      this.$http
+        .delete('auth/githubToken')
+        .then(() => {
+          this.token = null;
+          this.notification = { type: 'warning', message: 'Token was removed successfully' };
+          this.$emit('delete:currentToken');
+        })
+        .catch(() => {
+          this.errorNotification();
+        })
+        .finally(() => {
+          this.isDeleting = false;
+        });
+    },
+    errorNotification() {
+      this.notification = { type: 'danger', message: 'Something went wrong, please try again' };
     },
   },
 };

@@ -21,6 +21,13 @@ class UserTest extends TestCase
         $this->assertSame($user->github_token, decrypt($user->getRawOriginal('github_token')));
     }
 
+    public function testItDoesntEncrpytGithubTokenBlankValues()
+    {
+        $user = factory(User::class)->create(['github_token' => null]);
+
+        $this->assertNull($user->getRawOriginal('github_token'));
+    }
+
     public function testItReturnsANullTokenIfTheApiKeyChanges()
     {
         $user = factory(User::class)->create(['github_token' => Str::random('5')]);

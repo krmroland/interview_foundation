@@ -9,6 +9,7 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::post('updateGithubToken', Auth\UpdateGithubTokenController::class);
+    Route::put('githubToken', Auth\UpdateGithubTokenController::class);
+    Route::delete('githubToken', Auth\DeleteGithubTokenController::class);
     Route::get('starredGithubRepositories', Auth\GetGithubStarredReposController::class);
 });

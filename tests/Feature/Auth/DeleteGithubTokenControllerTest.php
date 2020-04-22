@@ -8,18 +8,18 @@ use Illuminate\Support\Str;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class UpdateGithubTokenControllerTest extends TestCase
+class DeleteGithubTokenControllerTest extends TestCase
 {
     use RefreshDatabase;
 
     public function testItUpdatesTheUsersGithubTokenSuccessfully()
     {
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->create(['github_token' => 'some-token']);
 
         $this->actingAs($user)
-            ->putJson('/auth/githubToken', ['github_token' => 'some-token'])
-            ->assertOk();
+            ->deleteJson('/auth/githubToken')
+            ->assertStatus(204);
 
-        $this->assertEquals($user->fresh()->github_token, 'some-token');
+        $this->assertNull($user->fresh()->github_token);
     }
 }

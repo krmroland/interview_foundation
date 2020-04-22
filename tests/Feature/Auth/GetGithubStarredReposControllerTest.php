@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class GetGithubStarredReposControllerTest extends TestCase
 {
-    use MocksGithubApiClient;
+    use MocksGithubApiClient, RefreshDatabase;
 
     public function testAPiReturnsStarredRepostioriesForCurrentlyAuthenticatedUser()
     {
