@@ -10,7 +10,11 @@
     <b-container>
       <b-row class="mt-5">
         <b-col md="10" sm="12" class="mx-auto">
-          <github-token :current-token="user.github_token" @update:currentToken="updateToken" />
+          <github-token
+            :current-token="user.github_token"
+            @update:currentToken="updateToken"
+            @delete:currentToken="deleteToken"
+          />
           <starred-repositories v-if="user.github_token" />
         </b-col>
       </b-row>
@@ -34,6 +38,9 @@ export default {
   methods: {
     updateToken(token) {
       this.$set(this.user, 'github_token', token);
+    },
+    deleteToken() {
+      this.$delete(this.user, 'github_token');
     },
   },
 };

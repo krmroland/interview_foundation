@@ -43,6 +43,7 @@ class Encrypted implements CastsAttributes
      */
     public function set($model, $key, $value, $attributes)
     {
-        return encrypt($value);
+        // we most probably don't want to encrypt null values
+        return transform($value, 'encrypt');
     }
 }

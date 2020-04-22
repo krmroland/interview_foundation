@@ -19,7 +19,7 @@ class RegistrationControllerTest extends TestCase
 
         $this->postJson('/auth/register', $data)->assertCreated();
 
-        $this->assertEquals(User::value('email'), $data['email']);
+        $this->assertTrue(User::whereEmail($data['email'])->exists());
     }
 
     public function testSuccessFullRegistrationAuthenticatesTheUserAutomatically()
@@ -57,6 +57,8 @@ class RegistrationControllerTest extends TestCase
 
         $this->postJson('/auth/register', $data)->assertCreated();
 
-        $this->assertTrue(Hash::check('secret', User::value('password')));
+        $this->assertTrue(
+            Hash::check('secret', User::whereEmail($data['email'])->value('password'))
+        );
     }
 }
